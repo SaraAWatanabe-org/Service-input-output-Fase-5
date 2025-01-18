@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: in-out
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: in-out
+  template:
+    metadata:
+      labels:
+        app: in-out
+    spec:
+      containers:
+      - name: in-out
+        image: saraaw/service-in-out:latest
+        ports:
+        - containerPort: 8081
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+          secretKeyRef:
+            name: aws-credentials
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-credentials
+              key: AWS_SECRET_ACCESS_KEY
+        - name: COGNITO_USER_POOL_ID
+          value: <your-cognito-user-pool-id>
+        - name: COGNITO_CLIENT_ID
+          value: <your-cognito-client-id>
+        - name: S3_BUCKET_NAME
+          value: <your-s3-bucket-name>
+        - name: SQS_QUEUE_URL
+          value: <your-sqs-queue-url>
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "125m"
+          limits:
+            memory: "256Mi"
+            cpu: "250m" 
+        
