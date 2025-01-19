@@ -25,6 +25,8 @@ import com.amazonaws.services.cognitoidp.model.InitiateAuthRequest;
 import com.amazonaws.services.cognitoidp.model.InitiateAuthResult;
 import com.amazonaws.services.cognitoidp.model.RespondToAuthChallengeRequest;
 import com.amazonaws.services.cognitoidp.model.RespondToAuthChallengeResult;
+import com.challenge.fastfood.service_io.dtos.UserCreateDto;
+import com.challenge.fastfood.service_io.dtos.UserDto;
 import com.challenge.fastfood.service_io.entities.UserEntity;
 import com.challenge.fastfood.service_io.exceptions.DataIntegrityException;
 import com.challenge.fastfood.service_io.exceptions.LoginFailException;
@@ -104,33 +106,33 @@ public class CognitoServiceImpl implements CognitoService {
 		}
     }
 	
-	public AdminCreateUserResult createUser(String username, String email, String name, String cpf) {
-		Optional<UserEntity> userOptional = this.userRepository.findById(username);
+	@Override
+	public UserDto createUser(UserCreateDto userCreateDto) {
+		Optional<UserEntity> userOptional = this.userRepository.findById(userCreateDto.getUsername());
 		if(userOptional.isPresent()) {
 			throw new DataIntegrityException("Já existe um usuário com esse username");
 		}
 		
         List<AttributeType> attributes = new ArrayList<>();
-        attributes.add(new AttributeType().withName("name").withValue(name));
-        attributes.add(new AttributeType().withName("email").withValue(email));
+        attributes.add(new AttributeType().withName("name").withValue(userCreateDto.getName()));
+        attributes.add(new AttributeType().withName("email").withValue(userCreateDto.getEmail()));
         
 		AdminCreateUserRequest createUserRequest = new AdminCreateUserRequest()
 				.withUserPoolId(userPoolId)
-				.withUsername(username)
-				.withTemporaryPassword(cpf)
+				.withUsername(userCreateDto.getUsername())
+				.withTemporaryPassword(userCreateDto.getCpf())
 				.withUserAttributes(attributes);
 		
 		AdminCreateUserResult response = cognitoClient.adminCreateUser(createUserRequest);
 		
-		
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(response.getUser().getUsername());
-        userEntity.setEmail(email);
-        userEntity.setName(name);
-        userEntity.setCpf(cpf);
+        userEntity.setEmail(userCreateDto.getEmail());
+        userEntity.setName(userCreateDto.getName());
+        userEntity.setCpf(userCreateDto.getCpf());
         userRepository.save(userEntity);
         
-		return response;
+		return new UserDto(userEntity);
 	}
 
 	public void addUserToGroup(String username, String groupName) {
