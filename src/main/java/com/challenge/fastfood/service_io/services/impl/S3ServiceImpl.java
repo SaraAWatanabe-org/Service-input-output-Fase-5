@@ -19,7 +19,7 @@ public class S3ServiceImpl implements S3Service {
 	@Value("${aws.s3.bucketName}") 
 	private String bucketName;
 
-	private final String folderName = "public/videos";
+	private final String folderName = "request/videos";
 
 	public S3ServiceImpl(AmazonS3 s3Client) {
 		this.s3Client = s3Client;
