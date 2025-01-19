@@ -5,6 +5,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -25,6 +26,7 @@ import com.amazonaws.services.cognitoidp.model.InitiateAuthResult;
 import com.amazonaws.services.cognitoidp.model.RespondToAuthChallengeRequest;
 import com.amazonaws.services.cognitoidp.model.RespondToAuthChallengeResult;
 import com.challenge.fastfood.service_io.entities.UserEntity;
+import com.challenge.fastfood.service_io.exceptions.DataIntegrityException;
 import com.challenge.fastfood.service_io.exceptions.LoginFailException;
 import com.challenge.fastfood.service_io.exceptions.NewPasswordRequiredException;
 import com.challenge.fastfood.service_io.repositories.UserRepository;
@@ -102,10 +104,11 @@ public class CognitoServiceImpl implements CognitoService {
 		}
     }
 	
-	
 	public AdminCreateUserResult createUser(String username, String email, String name, String cpf) {
-		//TODO
-		//check if user existis in local database.
+		Optional<UserEntity> userOptional = this.userRepository.findById(username);
+		if(userOptional.isPresent()) {
+			throw new DataIntegrityException("Já existe um usuário com esse username");
+		}
 		
         List<AttributeType> attributes = new ArrayList<>();
         attributes.add(new AttributeType().withName("name").withValue(name));
@@ -150,4 +153,5 @@ public class CognitoServiceImpl implements CognitoService {
             throw new RuntimeException("Error calculating secret hash", e);
         }
     }
+	
 }
