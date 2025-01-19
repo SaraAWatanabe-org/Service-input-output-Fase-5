@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.amazonaws.services.sqs.AmazonSQS;
+import com.challenge.fastfood.service_io.dtos.VideoRequestMessageDto;
 import com.challenge.fastfood.service_io.entities.VideoRequestEntity;
 import com.challenge.fastfood.service_io.exceptions.MessageQueueFailException;
 import com.challenge.fastfood.service_io.services.SQSService;
@@ -30,7 +31,8 @@ public class SQSServiceImpl implements SQSService {
     
     public void sendMessage(VideoRequestEntity videoRequest) {
         try {
-            String message = objectMapper.writeValueAsString(videoRequest);
+        	VideoRequestMessageDto request = new VideoRequestMessageDto(videoRequest);
+            String message = objectMapper.writeValueAsString(request);
             amazonSQS.sendMessage(queueUrl, message);
         } catch (Exception e) {
             throw new MessageQueueFailException("Erro ao enviar mensagem para o SQS", e);

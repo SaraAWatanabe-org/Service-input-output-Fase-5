@@ -24,9 +24,10 @@ public class SecurityConfig {
 		http
 		.csrf(csrf -> csrf.disable())
 		.authorizeHttpRequests(auth -> auth
-				//examples
-				//.requestMatchers("/authentications/**").permitAll()
+				.requestMatchers("/auth/**").permitAll()
+				//example
 				//.requestMatchers("/api/seller/**").hasRole("SELLER")
+
 				//.anyRequest().authenticated()
 				//Testes
 				.anyRequest().permitAll()
