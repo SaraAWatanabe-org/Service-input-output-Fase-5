@@ -10,15 +10,17 @@ import lombok.Data;
 public class VideoRequestMessageDto {
 
 	private UUID id;
-	private String username;
+	private String email;
 	private String url;
+	private String key;
 
 	public VideoRequestMessageDto(VideoRequestEntity videoRequestEntity) {
 		this.id = videoRequestEntity.getId();
 		this.url =  videoRequestEntity.getUrl();
+		this.key = videoRequestEntity.getObjectKey();
 		
 		if(videoRequestEntity.getRequester() != null) {
-			this.username = videoRequestEntity.getRequester().getName();
+			this.email = videoRequestEntity.getRequester().getEmail();
 		}
 	}
 

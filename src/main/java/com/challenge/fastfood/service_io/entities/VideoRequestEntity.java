@@ -31,6 +31,9 @@ public class VideoRequestEntity {
 	private String url;
 	
 	@Column(nullable = false)
+	private String objectKey;
+	
+	@Column(nullable = false)
 	private LocalDateTime createDate;
 
 	@Column(nullable = false)

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.challenge.fastfood.service_io.dtos.UploadS3Response;
 import com.challenge.fastfood.service_io.entities.UserEntity;
 import com.challenge.fastfood.service_io.entities.VideoRequestEntity;
 import com.challenge.fastfood.service_io.enums.RequestStatusEnum;
@@ -48,18 +49,19 @@ public class VideoRequestServiceImpl implements VideoRequestService {
 
 		VideoRequestEntity request = new VideoRequestEntity();
 
-		String fileUrl = null;
+		UploadS3Response uploadResponse = null;
 		try {
-			fileUrl = s3Service.uploadFile(file);
+			uploadResponse = s3Service.uploadFile(file);
 		} catch (IOException e) {
 			throw new FileUploadFailException("Falha para subir aquivo no S3.");
 		}
 
 		request.setRequester(user);
-		request.setUrl(fileUrl);
+		request.setUrl(uploadResponse.getUrl());
+		request.setObjectKey(uploadResponse.getKey());
 		request.setStatus(RequestStatusEnum.WAITING_PROCESS);
 		request = this.videoRequestRepository.save(request);
-
+		
 		sqsService.sendMessage(request);
 
 		return request;

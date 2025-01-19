@@ -4,8 +4,10 @@ import java.io.IOException;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.challenge.fastfood.service_io.dtos.UploadS3Response;
+
 public interface S3Service {
 
-	String uploadFile(MultipartFile image) throws IOException;
+	UploadS3Response uploadFile(MultipartFile image) throws IOException;
 
 }

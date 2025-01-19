@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.challenge.fastfood.service_io.dtos.UploadS3Response;
 import com.challenge.fastfood.service_io.services.S3Service;
 
 @Service
@@ -25,14 +26,16 @@ public class S3ServiceImpl implements S3Service {
 		this.s3Client = s3Client;
 	}
 
-	public String uploadFile(MultipartFile file) throws IOException {
+	@Override
+	public UploadS3Response uploadFile(MultipartFile file) throws IOException {
 		String fileName = folderName + "/" + UUID.randomUUID() + "_" + file.getOriginalFilename();
 		ObjectMetadata metadata = new ObjectMetadata();
 		metadata.setContentLength(file.getSize());
 		metadata.setContentType(file.getContentType());
 
 		s3Client.putObject(bucketName, fileName, file.getInputStream(), metadata);
-		return s3Client.getUrl(bucketName, fileName).toString();
+		String url = s3Client.getUrl(bucketName, fileName).toString();
+		return new UploadS3Response(url, fileName);
 	}
 
 }
