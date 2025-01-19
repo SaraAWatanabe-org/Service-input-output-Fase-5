@@ -23,4 +23,6 @@ aws:
       name: input-outpuo-cognito
       id: 23cjqf663elcffe97g70egdvmo
       secret: ${AWS_COGNITO_CLIENT_SECRET}
+  sqs:
+    queueUrl: queueUrl
     
