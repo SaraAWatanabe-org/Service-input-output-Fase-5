@@ -13,9 +13,13 @@ import com.challenge.fastfood.service_io.entities.VideoRequestEntity;
 import com.challenge.fastfood.service_io.exceptions.DataIntegrityException;
 import com.challenge.fastfood.service_io.services.VideoRequestService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/videos")
 @CrossOrigin(origins = "*", maxAge = 3600)
+@Tag(name = "Video", description = "Video Controller")
 public class VideoController {
 
     private final VideoRequestService videoRequestService;
@@ -25,6 +29,7 @@ public class VideoController {
     }
 
     @PostMapping("/upload")
+    @Operation(summary = "Create Video Request", description = "Create a video requesto to make images")
     public ResponseEntity<VideoRequestEntity> uploadVideo(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty() || !file.getContentType().startsWith("video/")) {
         	throw new DataIntegrityException("Arquivo inválido. Envie um vídeo.");
