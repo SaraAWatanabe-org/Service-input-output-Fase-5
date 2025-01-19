@@ -1,6 +1,7 @@
 package com.challenge.fastfood.service_io.services.impl;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,7 +32,7 @@ public class VideoRequestServiceImpl implements VideoRequestService {
 	private final UserRepository userRepository;
 
 	private final S3Service s3Service;
-	
+
 	private final SQSService sqsService;
 
 	public VideoRequestServiceImpl(VideoRequestRepository videoRequestRepository, UserRepository userRepository, S3Service s3Service, SQSService sqsService) {
@@ -53,23 +54,32 @@ public class VideoRequestServiceImpl implements VideoRequestService {
 		} catch (IOException e) {
 			throw new FileUploadFailException("Falha para subir aquivo no S3.");
 		}
-		
+
 		request.setRequester(user);
 		request.setUrl(fileUrl);
 		request.setStatus(RequestStatusEnum.WAITING_PROCESS);
 		request = this.videoRequestRepository.save(request);
-		
-        sqsService.sendMessage(request);
-        
+
+		sqsService.sendMessage(request);
+
 		return request;
 	}
-	
-	
+
+	public VideoRequestEntity updateStatus(UUID id, RequestStatusEnum status)  {
+		VideoRequestEntity videoRequestEntity = findById(id);
+		videoRequestEntity.setStatus(status);
+		return this.videoRequestRepository.save(videoRequestEntity);
+	}
+
+	public VideoRequestEntity findById(UUID id) {
+		return this.videoRequestRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("VideoRequest not found. Id: " + id));
+	}
+
 	private UserEntity getLoggedUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Jwt jwt = (Jwt) authentication.getPrincipal();
 		String username = jwt.getClaim("username");
-		
+
 		return findUserByUsername(username);
 	}
 
