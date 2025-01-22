@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.challenge.fastfood.service_io.entities.UserEntity;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, String>{
+public interface UserRepository extends JpaRepository<UserEntity, String> {
 
 }
