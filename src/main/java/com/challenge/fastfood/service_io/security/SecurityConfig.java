@@ -11,6 +11,8 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.challenge.fastfood.service_io.enums.UserRoleEnum;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -25,8 +27,10 @@ public class SecurityConfig {
 		.csrf(csrf -> csrf.disable())
 		.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/auth/**").permitAll()
-				//example
-				//.requestMatchers("/api/seller/**").hasRole("SELLER")
+				.requestMatchers("/auth/accept-terms").authenticated()
+				//TODO
+				//.requestMatchers("/auth/create-user-admin").hasRole(UserRoleEnum.ADMIN.getCode())
+				.requestMatchers("/videos/**").hasRole(UserRoleEnum.USER.getCode())
 
 				//.anyRequest().authenticated()
 				//Testes
