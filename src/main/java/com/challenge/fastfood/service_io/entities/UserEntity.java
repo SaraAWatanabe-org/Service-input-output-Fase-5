@@ -15,15 +15,16 @@ public class UserEntity {
 
 	@Id
 	@Column(nullable = false)
-	private String username;
-
+	private String email;
+	
 	@Column(nullable = false)
 	private String name;
 
-	private String email;
-
 	private String cpf;
-
+	
+	@Column(nullable = false)
+	private Boolean isTermAccepted;
+	
 	@OneToMany(mappedBy = "requester")
 	private List<VideoRequestEntity> videoRequests = new ArrayList<VideoRequestEntity>();
 

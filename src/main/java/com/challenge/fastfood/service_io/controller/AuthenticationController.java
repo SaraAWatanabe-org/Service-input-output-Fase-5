@@ -34,7 +34,7 @@ public class AuthenticationController {
 		String token = cognitoService.login(loginRequest.getUsername(), loginRequest.getPassword());
 		return ResponseEntity.ok(new AuthenticationResponseDto(token));
 	}
-
+	
 	@PostMapping("/respond-to-new-password")
 	@Operation(summary = "Respond to new Password", description = "Respond to new password requesto for the user")
 	public ResponseEntity<AuthenticationResponseDto> respondToNewPassword(@RequestBody NewPasswordRequestDto request) {
@@ -47,6 +47,13 @@ public class AuthenticationController {
 	public ResponseEntity<UserDto> create(@RequestBody UserCreateDto userCreateDto) {
 		UserDto userDto = cognitoService.createUser(userCreateDto);
 		return ResponseEntity.ok(userDto);
+	}
+	
+	@PostMapping("/accept-terms")
+	@Operation(summary = "Accept Terms", description = "Accept terms of use")
+	public ResponseEntity<Void> acceptTerms() {
+		cognitoService.acceptTermsOfUse();
+		return ResponseEntity.noContent().build();
 	}
 
 }

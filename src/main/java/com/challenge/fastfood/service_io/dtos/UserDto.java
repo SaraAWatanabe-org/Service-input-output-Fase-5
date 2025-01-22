@@ -13,6 +13,7 @@ public class UserDto {
 	private String name;
 	private String email;
 	private String cpf;
+	private Boolean isTermAccepted;
 
 	public  UserDto (UserEntity userEntity) {
 		BeanUtils.copyProperties(userEntity, this);

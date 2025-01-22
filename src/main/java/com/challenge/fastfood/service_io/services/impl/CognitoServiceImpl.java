@@ -12,7 +12,11 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.model.AdminAddUserToGroupRequest;
@@ -28,9 +32,11 @@ import com.amazonaws.services.cognitoidp.model.RespondToAuthChallengeResult;
 import com.challenge.fastfood.service_io.dtos.UserCreateDto;
 import com.challenge.fastfood.service_io.dtos.UserDto;
 import com.challenge.fastfood.service_io.entities.UserEntity;
+import com.challenge.fastfood.service_io.enums.UserRoleEnum;
 import com.challenge.fastfood.service_io.exceptions.DataIntegrityException;
 import com.challenge.fastfood.service_io.exceptions.LoginFailException;
 import com.challenge.fastfood.service_io.exceptions.NewPasswordRequiredException;
+import com.challenge.fastfood.service_io.exceptions.ObjectNotFoundException;
 import com.challenge.fastfood.service_io.repositories.UserRepository;
 import com.challenge.fastfood.service_io.services.CognitoService;
 
@@ -120,26 +126,28 @@ public class CognitoServiceImpl implements CognitoService {
 		AdminCreateUserRequest createUserRequest = new AdminCreateUserRequest()
 				.withUserPoolId(userPoolId)
 				.withUsername(userCreateDto.getUsername())
-				.withTemporaryPassword(userCreateDto.getCpf())
+				.withTemporaryPassword(userCreateDto.getPassword())
 				.withUserAttributes(attributes);
 		
+		//TODO EXCEPTION
 		AdminCreateUserResult response = cognitoClient.adminCreateUser(createUserRequest);
 		
         UserEntity userEntity = new UserEntity();
-        userEntity.setUsername(response.getUser().getUsername());
         userEntity.setEmail(userCreateDto.getEmail());
         userEntity.setName(userCreateDto.getName());
         userEntity.setCpf(userCreateDto.getCpf());
+        userEntity.setIsTermAccepted(false);
         userRepository.save(userEntity);
         
 		return new UserDto(userEntity);
 	}
 
-	public void addUserToGroup(String username, String groupName) {
+	//TODO CUSTOM EXCEPTION
+	private void addUserToGroup(String email, UserRoleEnum role) {
 		AdminAddUserToGroupRequest addUserToGroupRequest = new AdminAddUserToGroupRequest()
 				.withUserPoolId(userPoolId)
-				.withUsername(username)
-				.withGroupName(groupName);
+				.withUsername(email)
+				.withGroupName(role.getCode());
 		cognitoClient.adminAddUserToGroup(addUserToGroupRequest);
 	}
 	
@@ -155,5 +163,31 @@ public class CognitoServiceImpl implements CognitoService {
             throw new RuntimeException("Error calculating secret hash", e);
         }
     }
+
+	@Override
+	@Transactional
+	public void acceptTermsOfUse() {
+		UserEntity userEntity = this.getLoggedUser();
+		if(userEntity.getIsTermAccepted()) {
+			throw new DataIntegrityException("User has already accepted the terms of use.");
+		}
+		
+		this.addUserToGroup(clientSecret, UserRoleEnum.USER);
+		
+		userEntity.setIsTermAccepted(true);
+		this.userRepository.save(userEntity);
+	}
+	
+	private UserEntity getLoggedUser() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Jwt jwt = (Jwt) authentication.getPrincipal();
+		String email = jwt.getClaim("email");
+
+		return findUserByUsername(email);
+	}
+
+	private UserEntity findUserByUsername(String username) {
+		return this.userRepository.findById(username).orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado, converse com um administrador do sistema."));
+	}
 	
 }

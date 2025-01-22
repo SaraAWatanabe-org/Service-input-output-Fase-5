@@ -10,5 +10,7 @@ public interface CognitoService {
 	String respondToNewPasswordRequired(String session, String username, String newPassword);
 
 	UserDto createUser(UserCreateDto userCreateDto);
+	
+	void acceptTermsOfUse();
 
 }
