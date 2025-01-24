@@ -57,13 +57,13 @@ public class CognitoServiceImpl implements CognitoService {
 
 	@Autowired
 	private AWSCognitoIdentityProvider cognitoClient;
-	
+
 	@Autowired
 	private UserRepository userRepository;
 
 	@Override
 	public String login(String username, String password) {
-	     String secretHash = calculateSecretHash(clientId, clientSecret, username);
+		String secretHash = calculateSecretHash(clientId, clientSecret, username);
 
 		Map<String, String> authParams = new HashMap<>();
 		authParams.put("USERNAME", username);
@@ -77,68 +77,71 @@ public class CognitoServiceImpl implements CognitoService {
 
 		try {
 			InitiateAuthResult authResponse = cognitoClient.initiateAuth(authRequest);
-	        if (authResponse.getChallengeName() != null && authResponse.getChallengeName().equals(ChallengeNameType.NEW_PASSWORD_REQUIRED.toString())) {
-	            throw new NewPasswordRequiredException("Necessário alterar a senha", authResponse.getSession());
-	        }
+			if (authResponse.getChallengeName() != null && authResponse.getChallengeName().equals(ChallengeNameType.NEW_PASSWORD_REQUIRED.toString())) {
+				throw new NewPasswordRequiredException("Necessário alterar a senha", authResponse.getSession());
+			}
 			return authResponse.getAuthenticationResult().getIdToken();
 		} catch (NewPasswordRequiredException e) {
 			throw e;
 		} catch (Exception e) {
-			 throw new LoginFailException(e.getMessage());
+			//teste
+			e.printStackTrace();
+			log.error(e.getMessage());
+			throw new LoginFailException("Falha para efeturar login");
 		}
 
 	}
 
 	@Override
 	public String respondToNewPasswordRequired(String session, String username, String newPassword) {
-        String secretHash = calculateSecretHash(clientId, clientSecret, username);
+		String secretHash = calculateSecretHash(clientId, clientSecret, username);
 
-        Map<String, String> challengeResponses = new HashMap<>();
-        challengeResponses.put("USERNAME", username);
-        challengeResponses.put("NEW_PASSWORD", newPassword);
-        challengeResponses.put("SECRET_HASH", secretHash);
+		Map<String, String> challengeResponses = new HashMap<>();
+		challengeResponses.put("USERNAME", username);
+		challengeResponses.put("NEW_PASSWORD", newPassword);
+		challengeResponses.put("SECRET_HASH", secretHash);
 
-        RespondToAuthChallengeRequest request = new RespondToAuthChallengeRequest()
-        		.withClientId(clientId)
-                .withChallengeName(ChallengeNameType.NEW_PASSWORD_REQUIRED)
-                .withSession(session)
-                .withChallengeResponses(challengeResponses);
+		RespondToAuthChallengeRequest request = new RespondToAuthChallengeRequest()
+				.withClientId(clientId)
+				.withChallengeName(ChallengeNameType.NEW_PASSWORD_REQUIRED)
+				.withSession(session)
+				.withChallengeResponses(challengeResponses);
 
-        try {
-            RespondToAuthChallengeResult response = cognitoClient.respondToAuthChallenge(request);
-            return response.getAuthenticationResult().getIdToken();
+		try {
+			RespondToAuthChallengeResult response = cognitoClient.respondToAuthChallenge(request);
+			return response.getAuthenticationResult().getIdToken();
 		} catch (Exception e) {
-			 throw new LoginFailException(e.getMessage());
+			throw new LoginFailException(e.getMessage());
 		}
-    }
-	
+	}
+
 	@Override
 	public UserDto createUser(UserCreateDto userCreateDto) {
-		Optional<UserEntity> userOptional = this.userRepository.findById(userCreateDto.getUsername());
+		Optional<UserEntity> userOptional = this.userRepository.findById(userCreateDto.getEmail());
 		if(userOptional.isPresent()) {
 			throw new DataIntegrityException("Já existe um usuário com esse username");
 		}
-		
-        List<AttributeType> attributes = new ArrayList<>();
-        attributes.add(new AttributeType().withName("name").withValue(userCreateDto.getName()));
-        attributes.add(new AttributeType().withName("email").withValue(userCreateDto.getEmail()));
-        
+
+		List<AttributeType> attributes = new ArrayList<>();
+		attributes.add(new AttributeType().withName("name").withValue(userCreateDto.getName()));
+		attributes.add(new AttributeType().withName("email").withValue(userCreateDto.getEmail()));
+
 		AdminCreateUserRequest createUserRequest = new AdminCreateUserRequest()
 				.withUserPoolId(userPoolId)
-				.withUsername(userCreateDto.getUsername())
+				.withUsername(userCreateDto.getEmail())
 				.withTemporaryPassword(userCreateDto.getPassword())
 				.withUserAttributes(attributes);
-		
+
 		//TODO EXCEPTION
 		AdminCreateUserResult response = cognitoClient.adminCreateUser(createUserRequest);
-		
-        UserEntity userEntity = new UserEntity();
-        userEntity.setEmail(userCreateDto.getEmail());
-        userEntity.setName(userCreateDto.getName());
-        userEntity.setCpf(userCreateDto.getCpf());
-        userEntity.setIsTermAccepted(false);
-        userRepository.save(userEntity);
-        
+
+		UserEntity userEntity = new UserEntity();
+		userEntity.setEmail(userCreateDto.getEmail());
+		userEntity.setName(userCreateDto.getName());
+		userEntity.setCpf(userCreateDto.getCpf());
+		userEntity.setIsTermAccepted(false);
+		userRepository.save(userEntity);
+
 		return new UserDto(userEntity);
 	}
 
@@ -150,19 +153,19 @@ public class CognitoServiceImpl implements CognitoService {
 				.withGroupName(role.getCode());
 		cognitoClient.adminAddUserToGroup(addUserToGroupRequest);
 	}
-	
+
 	private static String calculateSecretHash(String userPoolClientId, String userPoolClientSecret, String username) {
-        try {
-            String message = username + userPoolClientId;
-            Mac mac = Mac.getInstance("HmacSHA256");
-            SecretKeySpec secretKeySpec = new SecretKeySpec(userPoolClientSecret.getBytes(), "HmacSHA256");
-            mac.init(secretKeySpec);
-            byte[] rawHmac = mac.doFinal(message.getBytes());
-            return Base64.getEncoder().encodeToString(rawHmac);
-        } catch (Exception e) {
-            throw new RuntimeException("Error calculating secret hash", e);
-        }
-    }
+		try {
+			String message = username + userPoolClientId;
+			Mac mac = Mac.getInstance("HmacSHA256");
+			SecretKeySpec secretKeySpec = new SecretKeySpec(userPoolClientSecret.getBytes(), "HmacSHA256");
+			mac.init(secretKeySpec);
+			byte[] rawHmac = mac.doFinal(message.getBytes());
+			return Base64.getEncoder().encodeToString(rawHmac);
+		} catch (Exception e) {
+			throw new RuntimeException("Error calculating secret hash", e);
+		}
+	}
 
 	@Override
 	@Transactional
@@ -171,13 +174,13 @@ public class CognitoServiceImpl implements CognitoService {
 		if(userEntity.getIsTermAccepted()) {
 			throw new DataIntegrityException("User has already accepted the terms of use.");
 		}
-		
-		this.addUserToGroup(clientSecret, UserRoleEnum.USER);
-		
+
+		this.addUserToGroup(userEntity.getEmail(), UserRoleEnum.USER);
+
 		userEntity.setIsTermAccepted(true);
 		this.userRepository.save(userEntity);
 	}
-	
+
 	private UserEntity getLoggedUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Jwt jwt = (Jwt) authentication.getPrincipal();
@@ -189,5 +192,5 @@ public class CognitoServiceImpl implements CognitoService {
 	private UserEntity findUserByUsername(String username) {
 		return this.userRepository.findById(username).orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado, converse com um administrador do sistema."));
 	}
-	
+
 }

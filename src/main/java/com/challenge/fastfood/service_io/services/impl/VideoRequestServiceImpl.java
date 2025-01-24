@@ -87,7 +87,7 @@ public class VideoRequestServiceImpl implements VideoRequestService {
 	
 	@Override
 	public VideoRequestEntity findByIdAndUserEmail(UUID id, String email) {
-		return this.videoRequestRepository.findByIdAndUserEmail(id, email).orElseThrow(() -> new ObjectNotFoundException("Request not found or not belonging to the user."));
+		return this.videoRequestRepository.findByIdAndRequesterEmail(id, email).orElseThrow(() -> new ObjectNotFoundException("Request not found or not belonging to the user."));
 	}
 
 	private UserEntity getLoggedUser() {

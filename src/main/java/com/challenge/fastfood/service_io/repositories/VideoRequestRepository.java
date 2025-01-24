@@ -13,6 +13,6 @@ import com.challenge.fastfood.service_io.entities.VideoRequestEntity;
 public interface VideoRequestRepository extends JpaRepository<VideoRequestEntity, UUID>, JpaSpecificationExecutor<VideoRequestEntity>{
 
 
-	Optional<VideoRequestEntity> findByIdAndUserEmail(UUID id, String email);
+	Optional<VideoRequestEntity> findByIdAndRequesterEmail(UUID id, String email);
 
 }

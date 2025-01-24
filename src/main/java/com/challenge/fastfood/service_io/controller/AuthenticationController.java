@@ -18,7 +18,6 @@ import com.challenge.fastfood.service_io.services.CognitoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -34,7 +33,7 @@ public class AuthenticationController {
 		String token = cognitoService.login(loginRequest.getUsername(), loginRequest.getPassword());
 		return ResponseEntity.ok(new AuthenticationResponseDto(token));
 	}
-	
+
 	@PostMapping("/respond-to-new-password")
 	@Operation(summary = "Respond to new Password", description = "Respond to new password requesto for the user")
 	public ResponseEntity<AuthenticationResponseDto> respondToNewPassword(@RequestBody NewPasswordRequestDto request) {
@@ -48,7 +47,7 @@ public class AuthenticationController {
 		UserDto userDto = cognitoService.createUser(userCreateDto);
 		return ResponseEntity.ok(userDto);
 	}
-	
+
 	@PostMapping("/accept-terms")
 	@Operation(summary = "Accept Terms", description = "Accept terms of use")
 	public ResponseEntity<Void> acceptTerms() {
