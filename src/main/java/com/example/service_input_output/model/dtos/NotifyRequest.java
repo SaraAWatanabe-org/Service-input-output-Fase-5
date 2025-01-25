@@ -1,4 +1,4 @@
-package com.example.service_input_output.model.dto;
+package com.example.service_input_output.model.dtos;
 
 import com.example.service_input_output.enums.NotificationType;
 

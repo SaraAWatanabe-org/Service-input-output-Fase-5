@@ -1,4 +1,4 @@
-package com.example.service_input_output.service;
+package com.example.service_input_output.service.impl;
 
 import org.springframework.stereotype.Service;
 

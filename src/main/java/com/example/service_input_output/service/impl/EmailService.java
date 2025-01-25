@@ -1,4 +1,4 @@
-package com.example.service_input_output.service;
+package com.example.service_input_output.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
