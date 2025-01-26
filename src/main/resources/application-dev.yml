@@ -17,16 +17,14 @@ spring:
   mail:
     host: live.smtp.mailtrap.io
     port: 587
-    username: smtp@mailtrap.io
-#TODO ENV VAR AQUI
-    password: 088a0b79126ea57cc8170828e941191b
-
+    username: ${MAILTRAP_USERNAME}
+    password: ${MAILTRAP_PASSWORD}
     properties:
       mail:
         smtp:
           auth: LOGIN
           starttls:
-          enable: true
+            enable: true
   
 mail: 
   recipient: rafael@roseno.dev 
@@ -34,7 +32,7 @@ mail:
 aws:
   accessKeyId: ${AWS_ACCESS_KEY_ID}
   secretKey: ${AWS_SECRET_KEY}
-  region: us-east-1
+  region: sa-east-1
   s3:
     bucketName: input-videos-bucket
   cognito:

@@ -1,10 +1,11 @@
 package com.example.service_input_output.service.impl;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
+import com.example.service_input_output.enums.NotificationType;
+import com.example.service_input_output.enums.RequestStatusEnum;
 import com.example.service_input_output.model.dtos.NotifyRequest;
 import com.example.service_input_output.model.dtos.NotifyResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
@@ -17,10 +18,11 @@ import static java.util.Objects.isNull;
 public class OutputService {
 
     final private EmailService emailService;
+    final private VideoRequestServiceImpl videoRequestService;
 
-    public NotifyResponse processNotification(NotifyRequest notifyRequest) throws IOException {
+    public NotifyResponse processNotification(NotifyRequest notifyRequest) {
         if (isNull(notifyRequest) || isNull(notifyRequest.notificationType())) {
-            throw new IllegalArgumentException("NotifyRequest or NotificationType cannot be null");
+            throw new IllegalArgumentException("NotifyRequest and NotificationType cannot be null");
         }
 
         return switch (notifyRequest.notificationType()) {
@@ -31,11 +33,13 @@ public class OutputService {
 
     private NotifyResponse processSuccess(NotifyRequest notifyRequest) {
         emailService.sendSimpleEmail(notifyRequest.email(), SUBJECT, format(SUCCESS_MESSAGE, notifyRequest.bucketAddress()));
-        return new NotifyResponse("SUCCESS");
+        videoRequestService.updateStatus(notifyRequest.videoRequestId(), RequestStatusEnum.FINISHED);
+        return new NotifyResponse(NotificationType.SUCCESS.name());
     }
 
     private NotifyResponse processError(NotifyRequest notifyRequest) {
         emailService.sendSimpleEmail(notifyRequest.email(), SUBJECT, ERROR_MESSAGE);
-        return new NotifyResponse("ERROR");
+        videoRequestService.updateStatus(notifyRequest.videoRequestId(), RequestStatusEnum.ERROR);
+        return new NotifyResponse(NotificationType.ERROR.name());
     }
 }
