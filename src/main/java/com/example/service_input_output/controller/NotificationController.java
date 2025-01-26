@@ -1,8 +1,9 @@
 package com.example.service_input_output.controller;
 
-import com.example.service_input_output.model.dto.NotifyRequest;
-import com.example.service_input_output.model.dto.NotifyResponse;
-import com.example.service_input_output.service.OutputService;
+import com.example.service_input_output.model.dtos.NotifyRequest;
+import com.example.service_input_output.model.dtos.NotifyResponse;
+import com.example.service_input_output.service.impl.OutputService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

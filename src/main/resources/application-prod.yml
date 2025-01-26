@@ -1,0 +1,51 @@
+spring:
+    
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+  mail:
+    host: live.smtp.mailtrap.io
+    port: 587
+    username: smtp@mailtrap.io
+#TODO ENV VAR AQUI
+    password: 088a0b79126ea57cc8170828e941191b
+
+    properties:
+      mail:
+        smtp:
+          auth: LOGIN
+          starttls:
+          enable: true
+
+mail: 
+  recipient: rafael@roseno.dev 
+			    
+aws:
+  accessKeyId: ${AWS_ACCESS_KEY_ID}
+  secretKey: ${AWS_SECRET_KEY}
+  region: us-east-1
+  s3:
+    bucketName: ${AWS_BUCKET_NAME}
+  cognito:
+    userPoolId: ${AWS_COGNITO_USER_POOL_ID}
+    jwkSetUri: ${AWS_COGNITO_APP_JWK_SET_URI}
+    client:
+      id: ${AWS_COGNITO_CLIENT_ID}
+      secret: ${AWS_COGNITO_CLIENT_SECRET}
+	  
+#TODO VAR
+  sqs:
+    queueName: soat_new_update_file
+    queueUrl: "https://sqs.sa-east-1.amazonaws.com/588738607552/soat_new_update_file"
+    

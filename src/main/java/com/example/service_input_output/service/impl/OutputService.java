@@ -1,9 +1,10 @@
-package com.example.service_input_output.service;
+package com.example.service_input_output.service.impl;
 
-import com.example.service_input_output.model.dto.NotifyRequest;
-import com.example.service_input_output.model.dto.NotifyResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import com.example.service_input_output.model.dtos.NotifyRequest;
+import com.example.service_input_output.model.dtos.NotifyResponse;
 
 import java.io.IOException;
 
