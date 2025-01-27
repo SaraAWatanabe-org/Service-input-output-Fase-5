@@ -34,15 +34,15 @@ mail:
 aws:
   accessKeyId: ${AWS_ACCESS_KEY_ID}
   secretKey: ${AWS_SECRET_KEY}
-  region: us-east-1
+  region: sa-east-1
   s3:
-    bucketName: input-videos-bucket
+    bucketName: soat-storage
   cognito:
-    userPoolId: us-east-1_6sF2byrsQ
-    jwkSetUri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_6sF2byrsQ/.well-known/jwks.json
+    userPoolId: sa-east-1_ItVS6S47N
+    jwkSetUri: https://cognito-idp.sa-east-1.amazonaws.com/sa-east-1_ItVS6S47N/.well-known/jwks.json
     client:
-      name: input-outpuo-cognito
-      id: 23cjqf663elcffe97g70egdvmo
+      name: input-output-cognito
+      id: 1muhaermpvh2evqurl4fopct2f
       secret: ${AWS_COGNITO_CLIENT_SECRET}
   sqs:
     queueName: soat_new_update_file
