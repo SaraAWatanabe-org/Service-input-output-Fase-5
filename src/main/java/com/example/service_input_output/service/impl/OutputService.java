@@ -19,11 +19,14 @@ public class OutputService {
 
     final private EmailService emailService;
     final private VideoRequestServiceImpl videoRequestService;
+    final private testNotifyQueue testNotifyQueue;
 
     public NotifyResponse processNotification(NotifyRequest notifyRequest) {
         if (isNull(notifyRequest) || isNull(notifyRequest.notificationType())) {
             throw new IllegalArgumentException("NotifyRequest and NotificationType cannot be null");
         }
+
+        testNotifyQueue.sendMessage("Processing notification");
 
         return switch (notifyRequest.notificationType()) {
             case SUCCESS -> processSuccess(notifyRequest);
@@ -32,7 +35,7 @@ public class OutputService {
     }
 
     private NotifyResponse processSuccess(NotifyRequest notifyRequest) {
-        emailService.sendSimpleEmail(notifyRequest.email(), SUBJECT, format(SUCCESS_MESSAGE, notifyRequest.bucketAddress()));
+//        emailService.sendSimpleEmail(notifyRequest.email(), SUBJECT, format(SUCCESS_MESSAGE, notifyRequest.bucketAddress()));
 //        videoRequestService.updateStatus(notifyRequest.videoRequestId(), RequestStatusEnum.FINISHED);
         return new NotifyResponse(NotificationType.SUCCESS.name());
     }

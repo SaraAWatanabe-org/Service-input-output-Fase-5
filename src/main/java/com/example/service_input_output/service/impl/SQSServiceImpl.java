@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class SQSServiceImpl implements SQSService {
 
-    @Value("${aws.sqs.queueUrl}")
+    @Value("${aws.sqs.producer.queueUrl}")
     private String queueUrl;
 
     private final AmazonSQS amazonSQS;

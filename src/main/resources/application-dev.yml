@@ -43,8 +43,10 @@ aws:
       id: 23cjqf663elcffe97g70egdvmo
       secret: ${AWS_COGNITO_CLIENT_SECRET}
   sqs:
-    queueName: soat_new_update_file
-    queueUrl: "https://sqs.sa-east-1.amazonaws.com/588738607552/soat_new_update_file"
-    additionalQueue:
+    endpoint: https://sqs.sa-east-1.amazonaws.com
+    producer:
+      queueName: soat_new_update_file
+      queueUrl: "https://sqs.sa-east-1.amazonaws.com/588738607552/soat_new_update_file"
+    listener:
       queueName: soat_notifier
       queueUrl: "https://sqs.sa-east-1.amazonaws.com/588738607552/soat_notifier"
