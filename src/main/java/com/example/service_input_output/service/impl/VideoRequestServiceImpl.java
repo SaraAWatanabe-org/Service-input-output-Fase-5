@@ -94,7 +94,6 @@ public class VideoRequestServiceImpl implements VideoRequestService {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Jwt jwt = (Jwt) authentication.getPrincipal();
 		String email = jwt.getClaim("email");
-
 		return findUserByUsername(email);
 	}
 
