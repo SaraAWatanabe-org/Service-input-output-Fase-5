@@ -15,8 +15,8 @@ public class NotificationListener {
 
     final OutputService outputService;
 
-    @SqsListener("${cloud.aws.sqs.queue-name}")
-    public void processMessage(NotifyRequest notifyRequest) throws IOException {
+    @SqsListener("${aws.sqs.additionalQueue.queueName}")
+    public void processMessage(NotifyRequest notifyRequest) {
         System.out.println("Message received from Notify queue " + notifyRequest);
         outputService.processNotification(notifyRequest);
     }

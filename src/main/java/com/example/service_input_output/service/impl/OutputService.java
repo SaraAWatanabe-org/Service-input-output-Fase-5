@@ -33,13 +33,13 @@ public class OutputService {
 
     private NotifyResponse processSuccess(NotifyRequest notifyRequest) {
         emailService.sendSimpleEmail(notifyRequest.email(), SUBJECT, format(SUCCESS_MESSAGE, notifyRequest.bucketAddress()));
-        videoRequestService.updateStatus(notifyRequest.videoRequestId(), RequestStatusEnum.FINISHED);
+//        videoRequestService.updateStatus(notifyRequest.videoRequestId(), RequestStatusEnum.FINISHED);
         return new NotifyResponse(NotificationType.SUCCESS.name());
     }
 
     private NotifyResponse processError(NotifyRequest notifyRequest) {
         emailService.sendSimpleEmail(notifyRequest.email(), SUBJECT, ERROR_MESSAGE);
-        videoRequestService.updateStatus(notifyRequest.videoRequestId(), RequestStatusEnum.ERROR);
+//        videoRequestService.updateStatus(notifyRequest.videoRequestId(), RequestStatusEnum.ERROR);
         return new NotifyResponse(NotificationType.ERROR.name());
     }
 }
