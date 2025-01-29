@@ -20,7 +20,7 @@ import com.example.service_input_output.service.S3Service;
 @Service
 public class S3ServiceImpl implements S3Service {
 
-	@Value("${aws.s3.bucketName}") 
+	@Value("${cloud.aws.s3.bucketName}")
 	private String bucketName;
 
 	private final AmazonS3 s3Client;
