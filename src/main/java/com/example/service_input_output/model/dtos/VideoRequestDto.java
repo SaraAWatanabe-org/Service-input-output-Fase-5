@@ -14,7 +14,7 @@ public class VideoRequestDto {
 
 	private UUID id;
 	private String status;
-	private String url;
+	private String zipUrl;
 	private String objectKey;
 	private LocalDateTime createDate;
 	private LocalDateTime lastUpdate;

@@ -13,6 +13,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.example.service_input_output.entities.VideoRequestEntity;
+import com.example.service_input_output.enums.RequestStatusEnum;
 import com.example.service_input_output.model.dtos.UploadS3Response;
 import com.example.service_input_output.model.dtos.VideoRequestDto;
 import com.example.service_input_output.service.S3Service;
@@ -43,6 +44,12 @@ public class S3ServiceImpl implements S3Service {
 
 	@Override
 	public VideoRequestDto generatePresignedUrl(VideoRequestEntity videoRequestEntity) {
+		VideoRequestDto videoRequest = new VideoRequestDto(videoRequestEntity);
+		
+    	if(!videoRequestEntity.getStatus().equals(RequestStatusEnum.FINISHED)) {
+    		return videoRequest;
+    	}
+    	
 		Date expiration = new Date();
 		long expirationTimeMillis = expiration.getTime() + (1000 * 60 * 15);
 		expiration.setTime(expirationTimeMillis);
@@ -53,9 +60,9 @@ public class S3ServiceImpl implements S3Service {
 				.withMethod(com.amazonaws.HttpMethod.GET)
 				.withExpiration(expiration);
 
-		VideoRequestDto videoRequest = new VideoRequestDto(videoRequestEntity);
+		
 		URL url = s3Client.generatePresignedUrl(generatePresignedUrlRequest);
-		videoRequest.setUrl(url.toString());
+		videoRequest.setZipUrl(url.toString());
 
 		return videoRequest;
 	}

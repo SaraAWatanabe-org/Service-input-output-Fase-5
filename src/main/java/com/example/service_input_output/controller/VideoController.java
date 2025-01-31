@@ -67,7 +67,7 @@ public class VideoController {
 		return ResponseEntity.ok().body(pageDto);
     }
     
-    @GetMapping("/{id}/temporary-url")
+    @GetMapping("/{id}/temporary-zip-url")
     @Operation(summary = "Get by Id with Token", description = "Get by Id with S3 temporary Url")
     public ResponseEntity<VideoRequestDto> getByIdWithTemporaryUrl(@PathVariable UUID id) {
     	String email = jwtUtils.getEmailFromJwt();
