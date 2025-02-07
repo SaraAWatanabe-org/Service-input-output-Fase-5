@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,12 +48,13 @@ public class VideoController {
 
     @PostMapping("/upload")
     @Operation(summary = "Create Video Request", description = "Create a video requesto to make images")
-    public ResponseEntity<VideoRequestEntity> uploadVideo(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<VideoRequestDto> uploadVideo(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty() || !file.getContentType().startsWith("video/")) {
         	throw new DataIntegrityException("Arquivo inválido. Envie um vídeo.");
         }
 
-        var videoRequest = videoRequestService.createVideoRequest(file);
+        VideoRequestEntity videoRequestEntity = videoRequestService.createVideoRequest(file);
+        VideoRequestDto videoRequest = new VideoRequestDto(videoRequestEntity);
         return new ResponseEntity<>(videoRequest, HttpStatus.CREATED);
     }
     
@@ -65,9 +67,9 @@ public class VideoController {
 		return ResponseEntity.ok().body(pageDto);
     }
     
-    @GetMapping("/{id}/temporary-url")
+    @GetMapping("/{id}/temporary-zip-url")
     @Operation(summary = "Get by Id with Token", description = "Get by Id with S3 temporary Url")
-    public ResponseEntity<VideoRequestDto> getByIdWithTemporaryUrl(UUID id) {
+    public ResponseEntity<VideoRequestDto> getByIdWithTemporaryUrl(@PathVariable UUID id) {
     	String email = jwtUtils.getEmailFromJwt();
     	VideoRequestEntity videoRequestEntity = videoRequestService.findByIdAndUserEmail(id, email);
     	VideoRequestDto videoRequestWithTempUrl = s3Service.generatePresignedUrl(videoRequestEntity);

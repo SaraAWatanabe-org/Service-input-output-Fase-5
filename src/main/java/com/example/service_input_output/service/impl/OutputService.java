@@ -7,8 +7,6 @@ import com.example.service_input_output.model.dtos.NotifyResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-
 import static com.example.service_input_output.utils.Constants.EmailConstants.*;
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
@@ -33,13 +31,15 @@ public class OutputService {
 
     private NotifyResponse processSuccess(NotifyRequest notifyRequest) {
         emailService.sendSimpleEmail(notifyRequest.email(), SUBJECT, format(SUCCESS_MESSAGE, notifyRequest.bucketAddress()));
-        videoRequestService.updateStatus(notifyRequest.videoRequestId(), RequestStatusEnum.FINISHED);
+        
+        videoRequestService.updateVideoRequest(notifyRequest.videoRequestId(), RequestStatusEnum.FINISHED, notifyRequest.bucketAddress());
+        
         return new NotifyResponse(NotificationType.SUCCESS.name());
     }
 
     private NotifyResponse processError(NotifyRequest notifyRequest) {
         emailService.sendSimpleEmail(notifyRequest.email(), SUBJECT, ERROR_MESSAGE);
-        videoRequestService.updateStatus(notifyRequest.videoRequestId(), RequestStatusEnum.ERROR);
+        videoRequestService.updateVideoRequest(notifyRequest.videoRequestId(), RequestStatusEnum.ERROR, null);
         return new NotifyResponse(NotificationType.ERROR.name());
     }
 }
