@@ -17,7 +17,7 @@ import com.example.service_input_output.enums.UserRoleEnum;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	@Value("${aws.cognito.jwkSetUri}")
+	@Value("${cloud.aws.cognito.jwkSetUri}")
 	private String jwkSetUri;
 
 

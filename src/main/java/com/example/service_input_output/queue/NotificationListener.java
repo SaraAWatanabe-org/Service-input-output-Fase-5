@@ -2,22 +2,21 @@ package com.example.service_input_output.queue;
 
 import com.example.service_input_output.model.dtos.NotifyRequest;
 import com.example.service_input_output.service.impl.OutputService;
-
+import io.awspring.cloud.sqs.annotation.SqsListener;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cloud.aws.messaging.listener.annotation.SqsListener;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class NotificationListener {
 
     final OutputService outputService;
 
-    @SqsListener("${cloud.aws.sqs.queue-name}")
-    public void processMessage(NotifyRequest notifyRequest) throws IOException {
-        System.out.println("Message received from Notify queue " + notifyRequest);
+    @SqsListener("soat_notifier")
+    public void processMessage(NotifyRequest notifyRequest) {
+        log.info("Message received from Notify queue {}", notifyRequest);
         outputService.processNotification(notifyRequest);
     }
 

@@ -13,13 +13,13 @@ import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderClientBuilder
 @Configuration
 public class CognitoConfig {
 
-	@Value("${aws.accessKeyId}")
+	@Value("${cloud.aws.accessKeyId}")
 	private String accessKeyId;
 
-	@Value("${aws.secretKey}")
+	@Value("${cloud.aws.secretKey}")
 	private String secretKey;
 
-	@Value("${aws.region}")
+	@Value("${cloud.aws.region.static}")
 	private String region;
 
 	@Bean

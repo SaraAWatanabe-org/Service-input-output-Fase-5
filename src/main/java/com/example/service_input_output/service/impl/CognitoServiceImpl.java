@@ -46,13 +46,13 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class CognitoServiceImpl implements CognitoService {
 
-	@Value("${aws.cognito.userPoolId}")
+	@Value("${cloud.aws.cognito.userPoolId}")
 	private String userPoolId;
 
-	@Value("${aws.cognito.client.id}")
+	@Value("${cloud.aws.cognito.client.id}")
 	private String clientId;
 
-	@Value("${aws.cognito.client.secret}")
+	@Value("${cloud.aws.cognito.client.secret}")
 	private String clientSecret;
 
 	@Autowired
