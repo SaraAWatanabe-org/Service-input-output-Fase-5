@@ -38,6 +38,8 @@ public class VideoRequestEntity {
 
 	@Column(nullable = false)
 	private LocalDateTime lastUpdate;
+	
+	private String zipUrl;
 
 	@ManyToOne
 	@JoinColumn(name = "requester_id")

@@ -70,9 +70,10 @@ public class VideoRequestServiceImpl implements VideoRequestService {
 		return request;
 	}
 
-	public VideoRequestEntity updateStatus(UUID id, RequestStatusEnum status)  {
+	public VideoRequestEntity updateVideoRequest(UUID id, RequestStatusEnum status, String zipUrl)  {
 		VideoRequestEntity videoRequestEntity = findById(id);
 		videoRequestEntity.setStatus(status);
+		videoRequestEntity.setZipUrl(zipUrl);
 		return this.videoRequestRepository.save(videoRequestEntity);
 	}
 
@@ -94,7 +95,6 @@ public class VideoRequestServiceImpl implements VideoRequestService {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Jwt jwt = (Jwt) authentication.getPrincipal();
 		String email = jwt.getClaim("email");
-
 		return findUserByUsername(email);
 	}
 

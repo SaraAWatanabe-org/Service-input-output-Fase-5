@@ -23,6 +23,7 @@ public class VideoRequestSimpleDto {
 
 	public VideoRequestSimpleDto(VideoRequestEntity videoRequestEntity) {
 		BeanUtils.copyProperties(videoRequestEntity, this);
+		this.status = videoRequestEntity.getStatus().getCode();
 	}
 
 }

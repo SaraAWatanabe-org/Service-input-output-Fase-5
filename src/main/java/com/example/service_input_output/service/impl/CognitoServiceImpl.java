@@ -19,9 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
-import com.amazonaws.services.cognitoidp.model.AdminAddUserToGroupRequest;
 import com.amazonaws.services.cognitoidp.model.AdminCreateUserRequest;
 import com.amazonaws.services.cognitoidp.model.AdminCreateUserResult;
+import com.amazonaws.services.cognitoidp.model.AdminUpdateUserAttributesRequest;
 import com.amazonaws.services.cognitoidp.model.AttributeType;
 import com.amazonaws.services.cognitoidp.model.AuthFlowType;
 import com.amazonaws.services.cognitoidp.model.ChallengeNameType;
@@ -108,6 +108,7 @@ public class CognitoServiceImpl implements CognitoService {
 			RespondToAuthChallengeResult response = cognitoClient.respondToAuthChallenge(request);
 			return response.getAuthenticationResult().getIdToken();
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new LoginFailException(e.getMessage());
 		}
 	}
@@ -130,8 +131,13 @@ public class CognitoServiceImpl implements CognitoService {
 				.withUserAttributes(attributes);
 
 		//TODO EXCEPTION
-		AdminCreateUserResult response = cognitoClient.adminCreateUser(createUserRequest);
-
+		try {
+			AdminCreateUserResult response = cognitoClient.adminCreateUser(createUserRequest);
+		} catch (Exception e) {
+			throw new DataIntegrityException(e.getMessage());
+			
+		}
+	
 		UserEntity userEntity = new UserEntity();
 		userEntity.setEmail(userCreateDto.getEmail());
 		userEntity.setName(userCreateDto.getName());
@@ -142,13 +148,17 @@ public class CognitoServiceImpl implements CognitoService {
 		return new UserDto(userEntity);
 	}
 
-	//TODO CUSTOM EXCEPTION
-	private void addUserToGroup(String email, UserRoleEnum role) {
-		AdminAddUserToGroupRequest addUserToGroupRequest = new AdminAddUserToGroupRequest()
-				.withUserPoolId(userPoolId)
-				.withUsername(email)
-				.withGroupName(role.getCode());
-		cognitoClient.adminAddUserToGroup(addUserToGroupRequest);
+	public void addUserRole(String username, UserRoleEnum role) {
+		try {
+			AdminUpdateUserAttributesRequest request = new AdminUpdateUserAttributesRequest()
+			.withUserPoolId(userPoolId)
+			.withUsername(username)
+			.withUserAttributes(new AttributeType().withName("custom:role").withValue(role.getCode()));
+			
+			cognitoClient.adminUpdateUserAttributes(request);
+		} catch (Exception e) {
+			throw new DataIntegrityException("Erro ao adicionar a role 'USER' ao usuário: " + username, e);
+		}
 	}
 
 	private static String calculateSecretHash(String userPoolClientId, String userPoolClientSecret, String username) {
@@ -160,7 +170,7 @@ public class CognitoServiceImpl implements CognitoService {
 			byte[] rawHmac = mac.doFinal(message.getBytes());
 			return Base64.getEncoder().encodeToString(rawHmac);
 		} catch (Exception e) {
-			throw new RuntimeException("Error calculating secret hash", e);
+			throw new DataIntegrityException("Error calculating secret hash", e);
 		}
 	}
 
@@ -172,7 +182,7 @@ public class CognitoServiceImpl implements CognitoService {
 			throw new DataIntegrityException("User has already accepted the terms of use.");
 		}
 
-		this.addUserToGroup(userEntity.getEmail(), UserRoleEnum.USER);
+		this.addUserRole(userEntity.getEmail(), UserRoleEnum.USER);
 
 		userEntity.setIsTermAccepted(true);
 		this.userRepository.save(userEntity);

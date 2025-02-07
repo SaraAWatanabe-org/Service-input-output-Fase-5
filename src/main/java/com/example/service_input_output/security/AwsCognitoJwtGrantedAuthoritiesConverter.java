@@ -15,23 +15,23 @@ public class AwsCognitoJwtGrantedAuthoritiesConverter  implements Converter<Jwt,
 
 	private final JwtGrantedAuthoritiesConverter defaultGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
 
-	@Override
-	public Collection<GrantedAuthority> convert(Jwt jwt) {
-		Collection<GrantedAuthority> authorities = defaultGrantedAuthoritiesConverter.convert(jwt);
-		
-		List<GrantedAuthority> cognitoAuthorities = null;
-		
-		if(jwt.getClaims().get("cognito:groups") != null) {
-			cognitoAuthorities = ((List<String>) jwt.getClaims().get("cognito:groups")).stream()
-			.map(group -> new SimpleGrantedAuthority("ROLE_" + group.toUpperCase()))
-			.collect(Collectors.toList());
-		} else {
-			cognitoAuthorities = new ArrayList<GrantedAuthority>();
-		}
-		
-		
-		authorities.addAll(cognitoAuthorities);
-		return authorities;
-	}
+    @Override
+    public Collection<GrantedAuthority> convert(Jwt jwt) {
+        Collection<GrantedAuthority> authorities = defaultGrantedAuthoritiesConverter.convert(jwt);
+
+        List<GrantedAuthority> customRoleAuthorities = new ArrayList<>();
+
+        System.out.println("Get custom role");
+        
+        if (jwt.getClaims().get("custom:role") != null) {
+            customRoleAuthorities = List.of(jwt.getClaimAsString("custom:role").split(","))
+                    .stream()
+                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase().trim()))
+                    .collect(Collectors.toList());
+        }
+
+        authorities.addAll(customRoleAuthorities);
+        return authorities;
+    }
 
 }
