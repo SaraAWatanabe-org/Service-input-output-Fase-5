@@ -1,0 +1,243 @@
+{
+	"info": {
+		"_postman_id": "6176ef94-274c-47af-8a19-2218a8e78b0b",
+		"name": "API_IO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21534302"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"marcelo.c.b.2.2@gmail.com\",\r\n    \"name\": \"Marcelo C\",\r\n    \"password\": \"Marcelo@Teste22\",\r\n    \"cpf\": \"00000000000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/create-user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"create-user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"marcelo.c.b.2.2@gmail.com\",\r\n    \"password\": \"Marcelo@Teste33\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Accept Terms (Autenticado)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiJDR0FPM1VFeGF1ZE50WFIwSERBOXlPVGU2YjBkMDdaSlwvODhRM083UXBRND0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI4MzZjY2E2YS0yMDExLTcwZTEtOThiMi0yNWVhODYwYmMyNWMiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuc2EtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3NhLWVhc3QtMV9JdFZTNlM0N04iLCJjb2duaXRvOnVzZXJuYW1lIjoiODM2Y2NhNmEtMjAxMS03MGUxLTk4YjItMjVlYTg2MGJjMjVjIiwib3JpZ2luX2p0aSI6IjY3ZjVkZDI0LWI3ZjUtNDdlZi1iMWE3LTk5MjRmNTQ0OGIwZiIsImF1ZCI6IjFtdWhhZXJtcHZoMmV2cXVybDRmb3BjdDJmIiwiZXZlbnRfaWQiOiJiYTU0YWU0Ny0wMmFlLTRkZDMtOWQzMC04M2MxMzJhZTlmOGEiLCJ0b2tlbl91c2UiOiJpZCIsImF1dGhfdGltZSI6MTczNzkwOTc3NywibmFtZSI6Ik1hcmNlbG8gQyIsImV4cCI6MTczNzkxMzM3NywiaWF0IjoxNzM3OTA5Nzc3LCJqdGkiOiIxZDFlMzkyMS1hY2JjLTQ1MzQtYWZiYy0yYjZiYmY4Y2NkMmMiLCJlbWFpbCI6Im1hcmNlbG8uYy5iLjIuMkBnbWFpbC5jb20ifQ.WS4TL81jkMez9cTel1Va0aSmBBpP8ohbcXlosoMCr_vs32cwLTNUqKZ9RvWTGB8rfHif993Gg10X2ZB6Tr1GMuoqOLFsDbEn7dic8vkBjK9cG9ZqVe9uRp0DdVYjj_gLeZD3L025sUIr6w1ueV6UgF5QYhFHHZFNEKq0Ipw0n_9Dn1XPVPUYW6IEfFoiZgQezWk_8DAa0B4mKEM8p2LK3R8Q_7LYcV5mPl6X-DrHpSotBMKG752QeUU3vnR9rgjwK1uZ35nQuWCg01u_zrS5PlkRAkh9uR7ftGB3XnXFtsDRu33sKvg1f22kqRY9aseeCRWu7OiVtgHD6L5KxeBxww",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/auth/accept-terms",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"accept-terms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Respond new Password (Depois de logar 1 vez)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"session\": \"AYABeCPdgdMzOVyZcjwKftAqbN8AHQABAAdTZXJ2aWNlABBDb2duaXRvVXNlclBvb2xzAAEAB2F3cy1rbXMAS2Fybjphd3M6a21zOnNhLWVhc3QtMToyOTQ2OTgzMDQwOTA6a2V5LzYzYWY5ZTk2LWM3OGUtNGIwNS05ODUzLTI2MzY0MWMwNmMwNwC4AQIBAHg4S5yywdwN1F_chlP5LbYAVVEItQbObfPPbqKpUzcYHwFurO2w1EGBKhIVfaOqrsu8AAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMTLDia7gXMHorG-vgAgEQgDuAIyedJ7GaK_kRmCKxn59YqGX8OefVJ4EQiKrVxng3q05D2liDuiKfRcVOPWIHNI2QPksgZaTQiRFcuAIAAAAADAAAEAAAAAAAAAAAAAAAAACKO9QKR9rdc7iqxlu0CUDc_____wAAAAEAAAAAAAAAAAAAAAEAAADxKAvRiE_0QLS49yleF2wZCnz_-lv14a0yHgSUeZYYnKHuPa5bz3E7_5KRb7-vx5BIewSH1lHeO-6NVCIv0LRglSrmauDT0Rjboy1yAhuG5CkHZss4kQGb-p_btdBQmGZ9dVvRjDWmPpkPcIIFabdx4rODD86NhCgTqKiS-FNsVOiqfHkBInpEp9XcByOL03gwiGn6pi5Ky0W2sP7CHV7iB3XZa7cd8yCV-ofZcNO0KSWXP4QCHxgBSbCi3uERfll1rS2Mti_P3PDXrQq1ngfssCMgheBjN-JW1tTzAhEutgpLwLVN_LGX1SWxFExLkqoh8d5F2umpSRn6ohLI4ii9MW4\",\r\n    \"username\": \"marcelo.c.b.2.2@gmail.com\",\r\n    \"newPassword\": \"Marcelo@Teste33\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/respond-to-new-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"respond-to-new-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "video-request",
+			"item": [
+				{
+					"name": "Upload Video",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiJDR0FPM1VFeGF1ZE50WFIwSERBOXlPVGU2YjBkMDdaSlwvODhRM083UXBRND0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI4MzZjY2E2YS0yMDExLTcwZTEtOThiMi0yNWVhODYwYmMyNWMiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuc2EtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3NhLWVhc3QtMV9JdFZTNlM0N04iLCJjb2duaXRvOnVzZXJuYW1lIjoiODM2Y2NhNmEtMjAxMS03MGUxLTk4YjItMjVlYTg2MGJjMjVjIiwib3JpZ2luX2p0aSI6ImIwZTc4ZTdhLTJjNzMtNDhmZC05MTkyLTY1NjJkODg1NTcwZCIsImF1ZCI6IjFtdWhhZXJtcHZoMmV2cXVybDRmb3BjdDJmIiwiZXZlbnRfaWQiOiIxMTZmOWY0OS1kMTI4LTQ4ZTctOWUyNS02MTAyZGJkZjdjNzMiLCJ0b2tlbl91c2UiOiJpZCIsImF1dGhfdGltZSI6MTczODM2NTg1MSwibmFtZSI6Ik1hcmNlbG8gQyIsImV4cCI6MTczODM2OTQ1MSwiY3VzdG9tOnJvbGUiOiJVU0VSIiwiaWF0IjoxNzM4MzY1ODUxLCJqdGkiOiJlNTlmMmQ5Yy0wMDRjLTQ3ZWEtOWQ5ZS03Mjg2YWFjNzRlYzgiLCJlbWFpbCI6Im1hcmNlbG8uYy5iLjIuMkBnbWFpbC5jb20ifQ.VnaUExe9ONlNRl-ss8R-J-RUuWY-ZDqOBnQpSCKh-Z5qBVOxS373UQJRfFKQ3nPGIOkg1Ap8kOlRB_3Sl4bHORco-Du8TmBzxZi29zTjdJfL11LhmqlSQfmVRQ9xFtJ9czilfypt6oF3goPOXqp9NwI_RdkBNhB7FJvKNZen7lsczStT9szBAxfLOQrXySFRbd7gy3RiY0RtgRjR_qJw6u-4Gls4NyCX6_Arc2AedZcWC5bmSvKn_qBwEAz2nLgabt3f6Xzvfkrf_QFjvGOn7LTmOodpaHLm9sH0_pYlODvIobmw90Cvp92kBsgUMfn17AT28mwX6m_5NEwTox8bRg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/marce/Downloads/SampleVideo_1280x720_1mb.mp4"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/videos/upload",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"videos",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiJDR0FPM1VFeGF1ZE50WFIwSERBOXlPVGU2YjBkMDdaSlwvODhRM083UXBRND0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI4MzZjY2E2YS0yMDExLTcwZTEtOThiMi0yNWVhODYwYmMyNWMiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuc2EtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3NhLWVhc3QtMV9JdFZTNlM0N04iLCJjb2duaXRvOnVzZXJuYW1lIjoiODM2Y2NhNmEtMjAxMS03MGUxLTk4YjItMjVlYTg2MGJjMjVjIiwib3JpZ2luX2p0aSI6ImIwZTc4ZTdhLTJjNzMtNDhmZC05MTkyLTY1NjJkODg1NTcwZCIsImF1ZCI6IjFtdWhhZXJtcHZoMmV2cXVybDRmb3BjdDJmIiwiZXZlbnRfaWQiOiIxMTZmOWY0OS1kMTI4LTQ4ZTctOWUyNS02MTAyZGJkZjdjNzMiLCJ0b2tlbl91c2UiOiJpZCIsImF1dGhfdGltZSI6MTczODM2NTg1MSwibmFtZSI6Ik1hcmNlbG8gQyIsImV4cCI6MTczODM2OTQ1MSwiY3VzdG9tOnJvbGUiOiJVU0VSIiwiaWF0IjoxNzM4MzY1ODUxLCJqdGkiOiJlNTlmMmQ5Yy0wMDRjLTQ3ZWEtOWQ5ZS03Mjg2YWFjNzRlYzgiLCJlbWFpbCI6Im1hcmNlbG8uYy5iLjIuMkBnbWFpbC5jb20ifQ.VnaUExe9ONlNRl-ss8R-J-RUuWY-ZDqOBnQpSCKh-Z5qBVOxS373UQJRfFKQ3nPGIOkg1Ap8kOlRB_3Sl4bHORco-Du8TmBzxZi29zTjdJfL11LhmqlSQfmVRQ9xFtJ9czilfypt6oF3goPOXqp9NwI_RdkBNhB7FJvKNZen7lsczStT9szBAxfLOQrXySFRbd7gy3RiY0RtgRjR_qJw6u-4Gls4NyCX6_Arc2AedZcWC5bmSvKn_qBwEAz2nLgabt3f6Xzvfkrf_QFjvGOn7LTmOodpaHLm9sH0_pYlODvIobmw90Cvp92kBsgUMfn17AT28mwX6m_5NEwTox8bRg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/videos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"videos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by Id with temporary url",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiJDR0FPM1VFeGF1ZE50WFIwSERBOXlPVGU2YjBkMDdaSlwvODhRM083UXBRND0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI4MzZjY2E2YS0yMDExLTcwZTEtOThiMi0yNWVhODYwYmMyNWMiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuc2EtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3NhLWVhc3QtMV9JdFZTNlM0N04iLCJjb2duaXRvOnVzZXJuYW1lIjoiODM2Y2NhNmEtMjAxMS03MGUxLTk4YjItMjVlYTg2MGJjMjVjIiwib3JpZ2luX2p0aSI6ImIwZTc4ZTdhLTJjNzMtNDhmZC05MTkyLTY1NjJkODg1NTcwZCIsImF1ZCI6IjFtdWhhZXJtcHZoMmV2cXVybDRmb3BjdDJmIiwiZXZlbnRfaWQiOiIxMTZmOWY0OS1kMTI4LTQ4ZTctOWUyNS02MTAyZGJkZjdjNzMiLCJ0b2tlbl91c2UiOiJpZCIsImF1dGhfdGltZSI6MTczODM2NTg1MSwibmFtZSI6Ik1hcmNlbG8gQyIsImV4cCI6MTczODM2OTQ1MSwiY3VzdG9tOnJvbGUiOiJVU0VSIiwiaWF0IjoxNzM4MzY1ODUxLCJqdGkiOiJlNTlmMmQ5Yy0wMDRjLTQ3ZWEtOWQ5ZS03Mjg2YWFjNzRlYzgiLCJlbWFpbCI6Im1hcmNlbG8uYy5iLjIuMkBnbWFpbC5jb20ifQ.VnaUExe9ONlNRl-ss8R-J-RUuWY-ZDqOBnQpSCKh-Z5qBVOxS373UQJRfFKQ3nPGIOkg1Ap8kOlRB_3Sl4bHORco-Du8TmBzxZi29zTjdJfL11LhmqlSQfmVRQ9xFtJ9czilfypt6oF3goPOXqp9NwI_RdkBNhB7FJvKNZen7lsczStT9szBAxfLOQrXySFRbd7gy3RiY0RtgRjR_qJw6u-4Gls4NyCX6_Arc2AedZcWC5bmSvKn_qBwEAz2nLgabt3f6Xzvfkrf_QFjvGOn7LTmOodpaHLm9sH0_pYlODvIobmw90Cvp92kBsgUMfn17AT28mwX6m_5NEwTox8bRg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/videos/0f1899db-693c-46fa-bcb9-c51b740c9b22/temporary-zip-url",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"videos",
+								"0f1899db-693c-46fa-bcb9-c51b740c9b22",
+								"temporary-zip-url"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
