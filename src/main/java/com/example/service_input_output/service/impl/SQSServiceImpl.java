@@ -30,7 +30,7 @@ public class SQSServiceImpl implements SQSService {
         	VideoRequestMessageDto request = new VideoRequestMessageDto(videoRequest);
             String message = objectMapper.writeValueAsString(request);
             SendMessageRequest sendMessageRequest = software.amazon.awssdk.services.sqs.model.SendMessageRequest.builder().queueUrl(queueUrl).messageBody(message).build();
-            amazonSQS.sendMessage(sendMessageRequest);
+            var test = amazonSQS.sendMessage(sendMessageRequest);
         } catch (Exception e) {
             throw new MessageQueueFailException("Erro ao enviar mensagem para o SQS", e);
         }

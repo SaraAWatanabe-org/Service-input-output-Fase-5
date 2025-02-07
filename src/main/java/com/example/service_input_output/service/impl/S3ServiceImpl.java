@@ -37,7 +37,8 @@ public class S3ServiceImpl implements S3Service {
 		metadata.setContentType(file.getContentType());
 
 		s3Client.putObject(bucketName, fileName, file.getInputStream(), metadata);
-		String url = s3Client.getUrl(bucketName, fileName).toString();
+		var test = s3Client.getUrl(bucketName, fileName);
+		String url = test.toString();
 		return new UploadS3Response(url, fileName);
 	}
 
