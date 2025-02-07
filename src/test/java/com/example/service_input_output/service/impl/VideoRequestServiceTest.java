@@ -120,11 +120,12 @@ public class VideoRequestServiceTest {
     void updateStatus() {
         var status = mock(RequestStatusEnum.class);
         var uuid = mock(UUID.class);
+        var zipUrl = mock(String.class);
 
         when(videoRequestRepository.findById(any())).thenReturn(Optional.of(new VideoRequestEntity()));
         when(videoRequestRepository.save(any())).thenReturn(new VideoRequestEntity());
 
-        assertDoesNotThrow(() -> videoRequestService.updateStatus(uuid, status));
+        assertDoesNotThrow(() -> videoRequestService.updateVideoRequest(uuid, status, zipUrl));
     }
 
     @Test

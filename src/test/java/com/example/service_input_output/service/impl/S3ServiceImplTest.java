@@ -98,7 +98,7 @@ public class S3ServiceImplTest {
         VideoRequestDto response = s3Service.generatePresignedUrl(videoRequestEntity);
 
         assertNotNull(response);
-        assertEquals(expectedUrl, response.getUrl());
+        assertEquals(expectedUrl, response.getZipUrl());
         verify(s3Client, times(1)).generatePresignedUrl(any(GeneratePresignedUrlRequest.class));
     }
 
