@@ -8,6 +8,6 @@ public record NotifyRequest(
         String email,
         NotificationType notificationType,
         String bucketAddress,
-        UUID videoRequestId
+        UUID videoId
 ) {
 }
