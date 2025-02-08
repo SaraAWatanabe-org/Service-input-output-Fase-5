@@ -34,14 +34,14 @@ public class OutputService {
     private NotifyResponse processSuccess(NotifyRequest notifyRequest) {
         emailService.sendSimpleEmail(notifyRequest.email(), SUBJECT, format(SUCCESS_MESSAGE, notifyRequest.bucketAddress()));
         
-        videoRequestService.updateVideoRequest(notifyRequest.videoRequestId(), RequestStatusEnum.FINISHED, notifyRequest.bucketAddress());
+        videoRequestService.updateVideoRequest(notifyRequest.videoId(), RequestStatusEnum.FINISHED, notifyRequest.bucketAddress());
         
         return new NotifyResponse(NotificationType.SUCCESS.name());
     }
 
     private NotifyResponse processError(NotifyRequest notifyRequest) {
         emailService.sendSimpleEmail(notifyRequest.email(), SUBJECT, ERROR_MESSAGE);
-        videoRequestService.updateVideoRequest(notifyRequest.videoRequestId(), RequestStatusEnum.ERROR, null);
+        videoRequestService.updateVideoRequest(notifyRequest.videoId(), RequestStatusEnum.ERROR, null);
         return new NotifyResponse(NotificationType.ERROR.name());
     }
 }
