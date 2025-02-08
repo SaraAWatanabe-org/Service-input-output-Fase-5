@@ -41,10 +41,10 @@ cloud:
     region:
       static: sa-east-1
     s3:
-      bucketName: input-videos-bucket
+      bucketName: soat-storage
     cognito:
       userPoolId: sa-east-1_ItVS6S47N
-      jwkSetUri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_6sF2byrsQ/.well-known/jwks.json
+      jwkSetUri: https://cognito-idp.sa-east-1.amazonaws.com/sa-east-1_ItVS6S47N/.well-known/jwks.json
       client:
         name: input-outpuo-cognito
         id: 1muhaermpvh2evqurl4fopct2f
