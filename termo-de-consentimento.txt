@@ -1,0 +1,30 @@
+# Termo de Consentimento para Tratamento de Dados Pessoais
+
+Prezado(a) Usuário,
+
+Para continuar utilizando nossos serviços, é necessário que você leia e aceite o Termo de Consentimento para Tratamento de Dados Pessoais, em conformidade com a **Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018)**.
+
+## 1. Finalidade do Tratamento
+
+Seus dados pessoais serão utilizados para:
+
+- Gerenciar seu acesso ao sistema;
+- Processar vídeos enviados por você;
+- Enviar notificações sobre o status do processamento dos seus vídeos.
+
+## 2. Direitos do Titular dos Dados
+
+Você poderá, a qualquer momento, solicitar:
+
+- Acesso, correção ou exclusão dos seus dados;
+- Revogação do consentimento, mediante solicitação.
+
+## 3. Responsabilidade pelo Conteúdo Compartilhado
+
+As informações pessoais compartilhadas e os vídeos postados são de inteira responsabilidade do usuário. O usuário se compromete a não compartilhar conteúdos que infrinjam direitos de terceiros, incluindo, mas não se limitando a, direitos autorais, privacidade e propriedade intelectual.
+
+Ao clicar no botão abaixo, você declara ter lido, compreendido e concordado com o tratamento dos seus dados pessoais conforme descrito acima.
+
+Para aceitar o termo, clique no botão abaixo:
+
+[ACEITAR TERMOS DE CONSENTIMENTO](https://example.com/accept)

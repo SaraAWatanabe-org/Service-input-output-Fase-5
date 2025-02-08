@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: in-out
+  namespace: my-namespace
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: in-out
+  template:
+    metadata:
+      labels:
+        app: in-out
+    spec:
+      containers:
+      - name: in-out
+        image: saraaw/service-in-out:latest
+        ports:
+        - containerPort: 8081
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          value: <your-aws-access-key-id>
+        - name: COGNITO_USER_POOL_ID
+          valueFrom:
+            configMapKeyRef:
+              name: config-in-out
+              key: COGNITO_USER_POOL_ID
+        - name: COGNITO_CLIENT_ID
+          valueFrom:
+            configMapKeyRef:
+              name: config-in-out
+              key: COGNITO_CLIENT_ID
+        - name: S3_BUCKET_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: config-in-out
+              key: S3_BUCKET_NAME
+        - name: SQS_QUEUE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: config-in-out
+              key: SQS_QUEUE_URL
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "125m"
+          limits:
+            memory: "256Mi"
+            cpu: "250m" 
+        
