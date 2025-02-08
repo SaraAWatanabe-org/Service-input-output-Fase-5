@@ -1,0 +1,59 @@
+spring:
+
+  logging:
+    level:
+      org.springframework: DEBUG
+      io.awspring: DEBUG
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db_input_output
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+  mail:
+    host: live.smtp.mailtrap.io
+    port: 587
+    username: ${MAILTRAP_USERNAME}
+    password: ${MAILTRAP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: LOGIN
+          starttls:
+            enable: true
+
+mail:
+  recipient: rafael@roseno.dev
+
+cloud:
+  aws:
+    accessKeyId: ${AWS_ACCESS_KEY_ID}
+    secretKey: ${AWS_SECRET_KEY}
+    region:
+      static: sa-east-1
+    s3:
+      bucketName: input-videos-bucket
+    cognito:
+      userPoolId: us-east-1_6sF2byrsQ
+      jwkSetUri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_6sF2byrsQ/.well-known/jwks.json
+      client:
+        name: input-outpuo-cognito
+        id: 23cjqf663elcffe97g70egdvmo
+        secret: ${AWS_COGNITO_CLIENT_SECRET}
+    sqs:
+      endpoint: https://sqs.sa-east-1.amazonaws.com
+      producer:
+        queueName: soat_new_update_file
+        queueUrl: "https://sqs.sa-east-1.amazonaws.com/588738607552/soat_new_update_file"
+      listener:
+        queueName: soat_notifier
+        queueUrl: "https://sqs.sa-east-1.amazonaws.com/588738607552/soat_notifier"
